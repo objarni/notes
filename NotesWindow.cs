@@ -17,6 +17,8 @@ namespace Notes
             this.InitializeComponent();
         }
 
+        private bool controlDown = false;
+
         private string path;
 
         private void Notes_FormClosing(object sender, FormClosingEventArgs e)
@@ -40,13 +42,42 @@ namespace Notes
 
         private void HandleKeyDown(object sender, KeyEventArgs e)
         {
+            controlDown = e.Control;
+
             if (e.Control && e.KeyCode == Keys.A)
             {
                 notesBox.SelectAll();
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
+
+            if (e.Control && e.KeyCode == Keys.PageDown)
+                this.EnlargeFont();
+
+            if (e.Control && e.KeyCode == Keys.PageUp)
+                this.ShrinkFont();
         }
 
+        private void EnlargeFont()
+        {
+            var oldFont = this.notesBox.Font;
+            if (oldFont.Size > 30) return;
+
+            this.ResizeFont(oldFont, 1.25);
+        }
+
+        private void ShrinkFont()
+        {
+            var oldFont = this.notesBox.Font;
+            if (oldFont.Size < 8) return;
+
+            this.ResizeFont(oldFont, 0.8);
+        }
+
+        private void ResizeFont(Font oldFont, double factor)
+        {
+            var biggerFont = new Font(oldFont.FontFamily, oldFont.Size * (float)factor);
+            this.notesBox.Font = biggerFont;
+        }
     }
 }

@@ -40,6 +40,7 @@
             this.notesBox.Location = new System.Drawing.Point(0, 0);
             this.notesBox.Multiline = true;
             this.notesBox.Name = "notesBox";
+            this.notesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.notesBox.Size = new System.Drawing.Size(226, 248);
             this.notesBox.TabIndex = 0;
             this.notesBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HandleKeyDown);
