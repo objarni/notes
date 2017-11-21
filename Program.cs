@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -17,16 +16,26 @@ namespace Notes
 
             if (alreadyRunning) return;
 
-            string path = GetPersistentFilePath();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new NotesWindow(path));
+            var notesWin = new NotesWindow(GetNotesPath(), GetWindowGeomPath());
+            Application.Run(notesWin);
         }
 
-        private static string GetPersistentFilePath()
+        private static string GetNotesPath()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Notes.txt");
+            return Path.Combine(
+                Environment.GetFolderPath(
+                    Environment.SpecialFolder.ApplicationData),
+                "Notes.txt");
+        }
+
+        private static string GetWindowGeomPath()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(
+                    Environment.SpecialFolder.ApplicationData),
+                "Notes.ini");
         }
 
         private static bool CheckIfAlreadyRunning()
