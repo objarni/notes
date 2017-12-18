@@ -18,15 +18,30 @@ namespace Notes
         private bool controlDown = false;
 
         private string notesPath, winGeomPath;
+        private System.Timers.Timer timer;
 
         private void Notes_FormClosing(object sender, FormClosingEventArgs e)
         {
-            File.WriteAllText(notesPath, notesBox.Text);
+            SaveText();
             SaveConfig(Left, Top, Width, Height);
+        }
+
+        private void SaveText()
+        {
+            File.WriteAllText(notesPath, notesBox.Text);
+        }
+
+        private void AutoSaveHandler(object source, EventArgs e)
+        {
+            SaveText();
         }
 
         private void HandleLoad(object sender, EventArgs e)
         {
+            timer = new System.Timers.Timer(1000 * 60); // Auto-save once per minute
+            timer.Elapsed += AutoSaveHandler;
+            timer.Enabled = true;
+
             try
             {
                 notesBox.Text = File.ReadAllText(notesPath);
